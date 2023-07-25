@@ -1,2 +1,6 @@
 *.pyc
 checkpoints/
+scripts/*.ipynb
+*_checkpoints
+scripts/cpc
+fairseq/

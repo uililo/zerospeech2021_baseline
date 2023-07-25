@@ -1,4 +1,4 @@
-name: zerospeech2021_baseline
+name: zerospeech2021_test
 channels:
   - pytorch
   - anaconda
@@ -14,11 +14,9 @@ dependencies:
   - pip
   - psutil
   - pysoundfile
-  - pytorch>=1.5.0
+  - pytorch=1.7.1
   - torchvision
-  - torchaudio
+  - torchaudio=0.7.2
   - tqdm
   - pip:
       - progressbar2
-      - "git+https://github.com/pytorch/fairseq.git"
-      - "git+https://github.com/tuanh208/CPC_audio.git@zerospeech"

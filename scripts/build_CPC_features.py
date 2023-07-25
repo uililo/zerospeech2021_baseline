@@ -2,7 +2,6 @@ import os
 import sys
 import json
 import argparse
-import progressbar
 from pathlib import Path
 from time import time
 import numpy as np
@@ -21,7 +20,7 @@ def parseArgs(argv):
                         help='Path to the dataset that we want to quantize.')
     parser.add_argument('pathOutputDir', type=str,
                         help='Path to the output directory.')
-    parser.add_argument('--file_extension', type=str, default="wav",
+    parser.add_argument('--file_extension', type=str, default="flac",
                           help="Extension of the audio files in the dataset (default: wav).")
     parser.add_argument('--get_encoded', type=bool, default=False,
                         help='If True, get the outputs of the encoder layer only (default: False).')
@@ -111,11 +110,8 @@ def main(argv):
     # Building features
     print("")
     print(f"Building CPC features and saving outputs to {args.pathOutputDir}...")
-    bar = progressbar.ProgressBar(maxval=len(seqNames))
-    bar.start()
     start_time = time()
     for index, vals in enumerate(seqNames):
-        bar.update(index)
 
         file_path = vals[1]
         file_path = os.path.join(args.pathDB, file_path)
@@ -124,10 +120,9 @@ def main(argv):
         CPC_features = CPC_feature_function(file_path)
 
         # Save the outputs
-        file_name = os.path.splitext(os.path.basename(file_path))[0] + ".txt"
+        file_name = os.path.splitext(os.path.basename(file_path))[0] + ".npy"
         file_out = os.path.join(args.pathOutputDir, file_name)
-        np.savetxt(file_out, CPC_features)
-    bar.finish()
+        np.save(file_out, CPC_features)
     print(f"...done {len(seqNames)} files in {time()-start_time} seconds.")
 
 if __name__ == "__main__":

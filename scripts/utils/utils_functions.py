@@ -1,9 +1,13 @@
 import json
 import argparse
 
+import sys
+sys.path.append("../")
+
+
 import torch
 from cpc.feature_loader import FeatureModule, loadModel
-from cpc.criterion.clustering import kMeanCluster
+#from cpc.criterion.clustering import kMeanCluster
 
 from fairseq import tasks, checkpoint_utils
 from fairseq.models.roberta import RobertaModel, RobertaHubInterface
@@ -30,7 +34,10 @@ def loadCPCFeatureMaker(pathCheckpoint, gru_level=-1, get_encoded=False, keep_hi
         updateConfig = None
 
     # Load CPC model
-    model, nHiddenGar, nHiddenEncoder = loadModel([pathCheckpoint], updateConfig=updateConfig)
+    # model, nHiddenGar, nHiddenEncoder = loadModel([pathCheckpoint], updateConfig=updateConfig)
+    if get_encoded:
+        gru_level = 1
+    model, nHiddenGar, nHiddenEncoder = loadModel([pathCheckpoint], gru_level)
     
     # Keep hidden units at LSTM layers on sequential batches
     model.gAR.keepHidden = keep_hidden
